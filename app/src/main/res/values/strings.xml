@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">KPhone</string>
+    <string name="content_description_google_translate_attribution">Powered by Google Translate</string>
+    <string name="overlay_help">Center text in box</string>
+    <string name="downloading_model_files">Downloading model files…</string>
+    <string name="downloaded_models_label">Downloaded models: %1$s</string>
+    <string name="translate_progress">Translating&#8230;</string>
+
+    <string name="translated_text_hint">Translated text</string>
+    <string name="delete_model">Delete Model</string>
+    <string name="download_model">Download Model</string>
+    <string name="unknown_error">Unknown error occurred.</string>
+    <string name="source_text_hint">Source text</string>
+</resources>
