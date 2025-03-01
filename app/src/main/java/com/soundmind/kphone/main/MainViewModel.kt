@@ -48,7 +48,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         translators.evictAll()
     }
 
-    lateinit var executor: Executor
+    /*lateinit*/ var executor: Executor = Executor { /* Dummy executor */ }
     private val languageIdentification by lazy {
         LanguageIdentification.getClient(
             LanguageIdentificationOptions.Builder().setExecutor(executor).build()
