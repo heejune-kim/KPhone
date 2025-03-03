@@ -39,6 +39,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import com.soundmind.kphone.databinding.FxgoActivityBinding
 import com.soundmind.kphone.util.compareLast
 import com.soundmind.kphone.util.lastAnSameSymbol
@@ -46,6 +47,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.soundmind.kphone.ClickListener
 import com.soundmind.kphone.Item
+import com.soundmind.kphone.MainActivity
 import com.soundmind.kphone.MainScreen
 import com.soundmind.kphone.MyGrid
 import com.soundmind.kphone.R
@@ -86,7 +88,7 @@ fun FxGridItem(item: FxItem, onItemClick: (FxItem) -> Unit) {
             .size(72.dp)
             .clickable { onItemClick(item) },
         //.clip(RoundedCornerShape(8.dp)),
-        contentScale = ContentScale.Crop
+        contentScale = ContentScale.Fit
     )
     /*
     Card(
@@ -137,11 +139,18 @@ class FxGoActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //val act: MainActivity = activity as MainActivity
+        //act.supportActionBar?.hide()
+
+        // Remove the title bar
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         //binding = FxgoActivityBinding.inflate(layoutInflater)
         //setContentView(binding.root)
 
         //bindClicks()
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
         setContent {
             KPhoneTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
