@@ -38,6 +38,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.soundmind.kphone.R
+import com.soundmind.kphone.activity.FxGoActivity
 import com.soundmind.kphone.activity.LingGoActivity
 import com.soundmind.kphone.activity.ViewGoActivity
 import com.soundmind.kphone.main.LingGoFragment
@@ -149,7 +150,10 @@ fun MainScreen(modifier: Modifier = Modifier) {
         }),
         Item(R.drawable.logo_mlkit, "FxGo", object : ClickListener {
             override fun onClick() {
-
+                //println("ViewGo clicked")
+                val intent = Intent(context, FxGoActivity::class.java)
+                //intent.putExtra("key", "value")
+                context.startActivity(intent)
             }
         }),
         Item(R.drawable.logo_mlkit, "Item 4", object : ClickListener {

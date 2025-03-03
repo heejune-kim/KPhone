@@ -11,4 +11,24 @@
     <string name="download_model">Download Model</string>
     <string name="unknown_error">Unknown error occurred.</string>
     <string name="source_text_hint">Source text</string>
+
+    <string name="clear_symbol">C</string>
+    <string name="parentheses_symbol">+/-</string>
+    <string name="percent_symbol">%</string>
+    <string name="multiply_symbol">*</string>
+    <string name="subtraction_symbol">-</string>
+    <string name="division_symbol">/</string>
+    <string name="plus_symbol">+</string>
+    <string name="dot_symbol">.</string>
+    <string name="equal_symbol">=</string>
+    <string name="number_seven">7</string>
+    <string name="number_eight">8</string>
+    <string name="number_nine">9</string>
+    <string name="number_four">4</string>
+    <string name="number_five">5</string>
+    <string name="number_six">6</string>
+    <string name="number_one">1</string>
+    <string name="number_two">2</string>
+    <string name="number_three">3</string>
+    <string name="number_zero">0</string>
 </resources>

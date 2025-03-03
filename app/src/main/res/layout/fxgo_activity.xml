@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp"
+    tools:context="com.soundmind.kphone.activity.FxGoActivity">
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/etDisplay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="10dp"
+        android:textAlignment="viewEnd"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toTopOf="@id/btClear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="0" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btClear"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/clear_symbol"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/btSeven"
+        app:layout_constraintEnd_toStartOf="@id/btParentheses"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btParentheses"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/parentheses_symbol"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btClear"
+        app:layout_constraintEnd_toStartOf="@id/btPercent"
+        app:layout_constraintStart_toEndOf="@id/btClear"
+        app:layout_constraintTop_toTopOf="@id/btClear" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btPercent"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:layout_marginEnd="4dp"
+        android:text="@string/percent_symbol"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btClear"
+        app:layout_constraintEnd_toStartOf="@+id/btDivide"
+        app:layout_constraintStart_toEndOf="@id/btParentheses"
+        app:layout_constraintTop_toTopOf="@id/btClear" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btDivide"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/division_symbol"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btClear"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btClear" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btSeven"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_seven"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/btFour"
+        app:layout_constraintEnd_toEndOf="@id/btClear"
+        app:layout_constraintStart_toStartOf="@id/btClear" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btEight"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_eight"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btSeven"
+        app:layout_constraintEnd_toEndOf="@id/btParentheses"
+        app:layout_constraintStart_toStartOf="@id/btParentheses"
+        app:layout_constraintTop_toTopOf="@id/btSeven" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btNine"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_nine"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btSeven"
+
+        app:layout_constraintEnd_toEndOf="@id/btPercent"
+        app:layout_constraintStart_toStartOf="@id/btPercent"
+        app:layout_constraintTop_toTopOf="@id/btSeven" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btMultiply"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/multiply_symbol"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btSeven"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/btSeven" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btFour"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_four"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/btOne"
+        app:layout_constraintEnd_toEndOf="@id/btClear"
+        app:layout_constraintStart_toStartOf="@id/btClear" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btFive"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_five"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btFour"
+        app:layout_constraintEnd_toEndOf="@id/btParentheses"
+        app:layout_constraintStart_toStartOf="@id/btParentheses"
+        app:layout_constraintTop_toTopOf="@id/btFour" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btSix"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_six"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btFour"
+        app:layout_constraintEnd_toEndOf="@id/btPercent"
+        app:layout_constraintStart_toStartOf="@id/btPercent"
+        app:layout_constraintTop_toTopOf="@id/btFour" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btMinus"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/subtraction_symbol"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btFour"
+        app:layout_constraintEnd_toEndOf="@id/btDivide"
+        app:layout_constraintStart_toStartOf="@id/btDivide"
+        app:layout_constraintTop_toTopOf="@id/btFour" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btOne"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_one"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/btZero"
+        app:layout_constraintEnd_toEndOf="@id/btClear"
+        app:layout_constraintStart_toStartOf="@id/btClear" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btTwo"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_two"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btOne"
+
+        app:layout_constraintEnd_toEndOf="@id/btParentheses"
+        app:layout_constraintStart_toStartOf="@id/btParentheses"
+        app:layout_constraintTop_toTopOf="@id/btOne" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btThree"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_three"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btOne"
+        app:layout_constraintEnd_toEndOf="@id/btPercent"
+        app:layout_constraintStart_toStartOf="@id/btPercent"
+        app:layout_constraintTop_toTopOf="@id/btOne" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btPlus"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/plus_symbol"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btOne"
+        app:layout_constraintEnd_toEndOf="@id/btDivide"
+        app:layout_constraintStart_toStartOf="@id/btDivide"
+        app:layout_constraintTop_toTopOf="@id/btOne" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btZero"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/number_zero"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/btClear"
+        app:layout_constraintStart_toStartOf="@+id/btClear" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btDot"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/dot_symbol"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btZero"
+        app:layout_constraintEnd_toEndOf="@+id/btParentheses"
+        app:layout_constraintStart_toStartOf="@id/btParentheses"
+        app:layout_constraintTop_toTopOf="@id/btZero" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btBack"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text=""
+        app:icon="@drawable/ic_baseline_backspace_24"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toBottomOf="@id/btZero"
+        app:layout_constraintEnd_toEndOf="@id/btPercent"
+        app:layout_constraintStart_toStartOf="@id/btPercent"
+        app:layout_constraintTop_toTopOf="@id/btZero" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btEqual"
+        android:layout_width="0dp"
+        android:layout_height="62dp"
+        android:text="@string/equal_symbol"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@id/btZero"
+        app:layout_constraintEnd_toEndOf="@id/btDivide"
+        app:layout_constraintStart_toStartOf="@id/btDivide"
+        app:layout_constraintTop_toTopOf="@id/btZero" />
+</androidx.constraintlayout.widget.ConstraintLayout>
