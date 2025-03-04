@@ -78,8 +78,8 @@ class LingGoFragment : Fragment() {
     )
     sourceLangSelector.adapter = adapter
     targetLangSelector.adapter = adapter
-    sourceLangSelector.setSelection(adapter.getPosition(Language("en")))
-    targetLangSelector.setSelection(adapter.getPosition(Language("es")))
+    sourceLangSelector.setSelection(adapter.getPosition(Language("ko")))
+    targetLangSelector.setSelection(adapter.getPosition(Language("en")))
     sourceLangSelector.onItemSelectedListener = object : OnItemSelectedListener {
       override fun onItemSelected(
         parent: AdapterView<*>?,

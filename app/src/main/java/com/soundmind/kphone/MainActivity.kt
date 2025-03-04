@@ -166,13 +166,9 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                 painter = painterResource(id = R.drawable.flag_vietnam),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    //.size(100.dp)
-                                    //.align(Alignment.TopStart)
                                     .padding(15.dp, 10.dp)
-                                    //.width (61.dp)
                                     .width(30.dp)
                                     .height(30.dp)
-                                    //.size(30.dp)
                                     .clip(CircleShape),
                                 //.clip(RoundedCornerShape(8.dp)),
                                 contentScale = ContentScale.Crop
@@ -187,7 +183,7 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                         .padding(start = 54.dp, top = 10.dp)
                                 )
                                 Text(
-                                    "111",
+                                    text = item.text,
                                     color = Color.White,
                                     fontSize = 11.sp,
                                     modifier = Modifier.padding(start = 84.dp, top = 10.dp),
@@ -203,7 +199,7 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                         .clip(RoundedCornerShape(20.dp)),
                                 ) {
                                     Text(
-                                        "111",
+                                        "Currency",
                                         color = Color.White,
                                         fontSize = 11.sp,
                                         //modifier = Modifier.padding(start = 84.dp, top = 10.dp),
@@ -253,7 +249,7 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                     .height(20.dp)
                             )
                             Text(
-                                "02-123-4567",
+                                text = item.text,
                                 color = Color.Black,
                                 fontSize = 13.sp,
                                 modifier = Modifier.padding(start = 50.dp, top = 0.dp),
@@ -370,7 +366,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 context.startActivity(intent)
             }
         }),
-        Item(R.drawable.top_support, 'S', R.drawable.top_support_phone, "Support Center", object : ClickListener {
+        Item(R.drawable.top_support, 'S', R.drawable.top_support_phone, "02-111-5555", object : ClickListener {
             override fun onClick() {
             }
         }),
