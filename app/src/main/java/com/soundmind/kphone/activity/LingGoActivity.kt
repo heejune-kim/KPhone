@@ -31,6 +31,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -54,14 +56,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.LifecycleOwner
 import com.soundmind.kphone.MainScreen
 import com.soundmind.kphone.R
+import com.soundmind.kphone.main.KPhoneModule
 import com.soundmind.kphone.main.LingGoFragment
 import com.soundmind.kphone.main.MainViewModel
 import com.soundmind.kphone.main.ViewGoFragment
@@ -71,7 +76,8 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 
 class LingGoActivity : AppCompatActivity() {
-    val viewModel: MainViewModel by viewModels()
+    //val viewModel: MainViewModel by viewModels()
+    val viewModel: KPhoneModule by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,18 +90,23 @@ class LingGoActivity : AppCompatActivity() {
                 .commitNow()
         }
         */
-        viewModel.sourceLang.value = Language("en")
-        viewModel.sourceLang.value = Language("ko")
+        //viewModel.sourceLang.value = Language("en")
+        //viewModel.sourceLang.value = Language("ko")
+        viewModel.setLanguages(source = "en", target = "ko")
+        /*
         viewModel.translatedText.observe(
-            viewLifecycleOwner,
+            this,
             { resultOrError ->
                 if (resultOrError.error != null) {
-                    srcTextView.setError(resultOrError.error!!.localizedMessage)
+                    Toast.makeText(this, resultOrError.error!!.localizedMessage, Toast.LENGTH_LONG).show()
+                    //srcTextView.setError(resultOrError.error!!.localizedMessage)
                 } else {
-                    targetTextView.text = resultOrError.result
+                    //targetTextView.text = resultOrError.result
+                    Toast.makeText(this, resultOrError.result, Toast.LENGTH_LONG).show()
                 }
             }
         )
+        */
 
         enableEdgeToEdge()
         setContent {
@@ -114,6 +125,9 @@ class LingGoActivity : AppCompatActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LingGoScreen(modifier: Modifier = Modifier) {
+    var sourceFlag by remember { mutableStateOf(R.drawable.flag_vietnam) }
+    var destinationFlag by remember { mutableStateOf(R.drawable.flag_korea) }
+
     val context = LocalContext.current
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -145,7 +159,8 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                 .fillMaxWidth()
         ) {
             Image(
-                painter = painterResource(id = R.drawable.flag_vietnam),
+                //painter = painterResource(id = R.drawable.flag_vietnam),
+                painter = painterResource(id = sourceFlag),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(15.dp, 10.dp)
@@ -164,20 +179,52 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                     //.fillMaxWidth(),
             )
 
+            /*
+            val contentColor: Color = MaterialTheme.colors.primary
+            Button(
+                onClick = { Toast.makeText(context, "Exchange", Toast.LENGTH_SHORT).show() },
+                content = {
+                    Image(
+                        painter = painterResource(id = R.drawable.linggo_exchange),
+                        contentDescription = null)
+                          },
+                modifier = Modifier
+                    //.fillMaxSize()
+                    .background(Color.Red)
+                    .padding(160.dp, 10.dp)
+                    .width(24.dp)
+                    .height(24.dp),
+                //.clip(RoundedCornerShape(8.dp)),
+                //contentScale = ContentScale.Crop,
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color.Transparent,
+                    contentColor = contentColor,
+                    disabledBackgroundColor = Color.Transparent,
+                    disabledContentColor = contentColor.copy(alpha = ContentAlpha.disabled),
+                )
+            )
+            */
+
             Image(
                 painter = painterResource(id = R.drawable.linggo_exchange),
                 contentDescription = null,
                 modifier = Modifier
-                    .clickable { Toast.makeText(context, "Exchange", Toast.LENGTH_SHORT).show() }
                     .padding(160.dp, 10.dp)
                     .width(24.dp)
-                    .height(24.dp),
+                    .height(24.dp)
+                    .clickable {
+                        Toast.makeText(context, "Exchange", Toast.LENGTH_SHORT).show()
+                        val temp = sourceFlag
+                        sourceFlag = destinationFlag
+                        destinationFlag = temp
+                    },
                 //.clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
             )
 
             Image(
-                painter = painterResource(id = R.drawable.flag_korea),
+                //painter = painterResource(id = R.drawable.flag_korea),
+                painter = painterResource(id = destinationFlag),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 200.dp, top = 10.dp)
@@ -203,7 +250,8 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                     .padding(start = 300.dp, top = 10.dp)
                     .width(24.dp)
                     .height(24.dp)
-                    .clip(CircleShape),
+                    .clip(CircleShape)
+                    .clickable { Toast.makeText(context, "Switch", Toast.LENGTH_SHORT).show() },
                 //.clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
@@ -232,14 +280,31 @@ fun SourceText() {
     val activity = context.getActivity() as? LingGoActivity
 
     var value by remember { mutableStateOf("") }
-    var anotherValue by remember { mutableStateOf("") }
-
+    var translated by remember { mutableStateOf("") }
+    //var anotherValue by remember { mutableStateOf("") }
+    //val translated = activity?.viewModel?.translatedText.
+    //val lifecycle = activity?.lifecycle as LifecycleOwner
+    val lifecycle = LocalLifecycleOwner.current
+    activity?.viewModel?.translatedText?.observe(
+        lifecycle,
+        { resultOrError ->
+            if (resultOrError.error != null) {
+                Toast.makeText(activity, resultOrError.error!!.localizedMessage, Toast.LENGTH_LONG).show()
+                //srcTextView.setError(resultOrError.error!!.localizedMessage)
+            } else {
+                //targetTextView.text = resultOrError.result
+                Toast.makeText(activity, resultOrError.result, Toast.LENGTH_LONG).show()
+                translated = resultOrError.result!!
+            }
+        }
+    )
     LaunchedEffect(value) {
         snapshotFlow { value }
             .debounce(1000)
             .collectLatest {
-                anotherValue = it
-                activity?.viewModel?.sourceText?.postValue(it)
+                //anotherValue = it
+                //activity?.viewModel?.sourceText?.postValue(it)
+                activity?.viewModel?.translateText(it)
             }
     }
     TextField(
@@ -253,7 +318,8 @@ fun SourceText() {
     )
 
     Text(
-        text = anotherValue,
+        //text = anotherValue,
+        text = translated,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 200.dp)

@@ -1,9 +1,9 @@
 package com.soundmind.kphone
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -14,13 +14,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -30,7 +27,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,26 +34,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
+import androidx.core.content.ContextCompat.startActivity
 import com.google.mlkit.nl.translate.TranslateLanguage
-import com.soundmind.kphone.R
 import com.soundmind.kphone.activity.FxGoActivity
 import com.soundmind.kphone.activity.LingGoActivity
 import com.soundmind.kphone.activity.ViewGoActivity
-import com.soundmind.kphone.main.LingGoFragment
-import com.soundmind.kphone.main.ViewGoFragment
 import com.soundmind.kphone.ui.theme.KPhoneTheme
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 import java.util.Locale
+import androidx.core.net.toUri
+
 
 interface ClickListener {
     fun onClick()
@@ -77,7 +69,7 @@ fun MyGrid(items: List<Item>, onItemClick: (Item) -> Unit) {
     val bgColor = Color(ContextCompat.getColor(context, R.color.topOuterBox))
     Card (
         modifier = Modifier
-            .padding(top=100.dp)
+            .padding(top = 100.dp)
             .padding(start = 20.dp, end = 20.dp)
             .fillMaxWidth()
             .background(Color.DarkGray)
@@ -213,7 +205,8 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                     //item.text,
                                     "AAA",
                                     color = Color.Red,
-                                    modifier = Modifier.padding(start = 74.dp, top = 50.dp)
+                                    modifier = Modifier
+                                        .padding(start = 74.dp, top = 50.dp)
                                         .width(145.dp)
                                         .height(45.dp)
                                 )
@@ -339,6 +332,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     //modifier
     //    .background(Color.Black)
     //    .fillMaxSize()
+    val phoneNumber = "02-111-5555"
     val context = LocalContext.current
     val items = listOf(
         Item(R.drawable.top_linggo, 'G', R.drawable.top_typing, "LingGo", object : ClickListener {
@@ -368,14 +362,26 @@ fun MainScreen(modifier: Modifier = Modifier) {
         }),
         Item(R.drawable.top_support, 'S', R.drawable.top_support_phone, "02-111-5555", object : ClickListener {
             override fun onClick() {
+                val intent = Intent(Intent.ACTION_DIAL).apply {
+                    data = "tel:$phoneNumber".toUri()
+                }
+                context.startActivity(intent)
             }
         }),
         Item(R.drawable.top_hanpass, 'H', -1, "https://www.hanpass.com/", object : ClickListener {
             override fun onClick() {
+                val url = "https://www.hanpass.com"
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setData(url.toUri())
+                context.startActivity(intent)
             }
         }),
         Item(R.drawable.top_kvisa, 'H', -1, "https://www.k-visa.co.kr/", object : ClickListener {
             override fun onClick() {
+                val url = "https://www.k-visa.co.kr"
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.setData(url.toUri())
+                context.startActivity(intent)
             }
         })
     )
