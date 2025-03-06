@@ -24,6 +24,18 @@
     android:layout_height="match_parent"
     tools:context="com.soundmind.kphone.main.ViewGoFragment"
     >
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/view_go_title"
+        app:navigationIcon="@drawable/ic_back" />
 
     <androidx.camera.view.PreviewView
         android:id="@+id/viewfinder"
@@ -32,7 +44,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/middle"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
     <SurfaceView
         android:id="@+id/overlay"
         android:layout_width="match_parent"

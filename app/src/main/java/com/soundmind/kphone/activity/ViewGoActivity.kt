@@ -42,13 +42,19 @@ import com.soundmind.kphone.main.ViewGoFragment
 import com.soundmind.kphone.ui.theme.KPhoneTheme
 
 class ViewGoActivity : AppCompatActivity() {
+    lateinit var systemLanguage: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_translateshowcase_activity)
+        systemLanguage = intent.getStringExtra("lang").toString()
+        val fragment = ViewGoFragment.newInstance()
+        val bundle = Bundle()
+        bundle.putString("lang", systemLanguage)
+        fragment.arguments = bundle
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 //.replace(R.id.container, ViewGoFragment.newInstance())
-                .replace(R.id.container, ViewGoFragment.newInstance())
+                .replace(R.id.container, fragment)
                 .commitNow()
         }
     }

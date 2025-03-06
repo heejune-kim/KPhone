@@ -64,6 +64,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.LifecycleOwner
+import com.soundmind.kphone.MainActivity
 import com.soundmind.kphone.MainScreen
 import com.soundmind.kphone.R
 import com.soundmind.kphone.main.KPhoneModule
@@ -72,6 +73,7 @@ import com.soundmind.kphone.main.MainViewModel
 import com.soundmind.kphone.main.ViewGoFragment
 import com.soundmind.kphone.ui.theme.KPhoneTheme
 import com.soundmind.kphone.util.Language
+import com.soundmind.kphone.util.LanguageFlag
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 
@@ -79,8 +81,13 @@ class LingGoActivity : AppCompatActivity() {
     //val viewModel: MainViewModel by viewModels()
     val viewModel: KPhoneModule by viewModels()
 
+    lateinit var systemLanguage: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        systemLanguage = intent.getStringExtra("lang").toString()
+
         /*
         setContentView(R.layout.main_translateshowcase_activity)
         if (savedInstanceState == null) {
@@ -92,7 +99,7 @@ class LingGoActivity : AppCompatActivity() {
         */
         //viewModel.sourceLang.value = Language("en")
         //viewModel.sourceLang.value = Language("ko")
-        viewModel.setLanguages(source = "en", target = "ko")
+        viewModel.setLanguages(source = systemLanguage, target = "ko")
         /*
         viewModel.translatedText.observe(
             this,
@@ -125,10 +132,16 @@ class LingGoActivity : AppCompatActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LingGoScreen(modifier: Modifier = Modifier) {
-    var sourceFlag by remember { mutableStateOf(R.drawable.flag_vietnam) }
-    var destinationFlag by remember { mutableStateOf(R.drawable.flag_korea) }
-
     val context = LocalContext.current
+    val activity = context.getActivity() as? LingGoActivity
+    val systemLanguage: String = activity!!.systemLanguage
+    //val (flag, language) = LanguageFlag.getInfoForLanguage(systemLanguage)
+
+    //var sourceFlag by remember { mutableStateOf(R.drawable.flag_vietnam) }
+    //var destinationFlag by remember { mutableStateOf(R.drawable.flag_korea) }
+    var sourceLang by remember { mutableStateOf(systemLanguage) }
+    var destinationLang by remember { mutableStateOf("ko") }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
@@ -160,7 +173,7 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
         ) {
             Image(
                 //painter = painterResource(id = R.drawable.flag_vietnam),
-                painter = painterResource(id = sourceFlag),
+                painter = painterResource(id = LanguageFlag.getFlagForLanguage(sourceLang)),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(15.dp, 10.dp)
@@ -171,7 +184,7 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                 contentScale = ContentScale.Crop,
             )
             Text(
-                text = "Vietnam",
+                text = LanguageFlag.getFullNameForLanguage(sourceLang),
                 color = Color.White,
                 fontSize = 15.sp,
                 modifier = Modifier
@@ -213,10 +226,11 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                     .width(24.dp)
                     .height(24.dp)
                     .clickable {
-                        Toast.makeText(context, "Exchange", Toast.LENGTH_SHORT).show()
-                        val temp = sourceFlag
-                        sourceFlag = destinationFlag
-                        destinationFlag = temp
+                        //Toast.makeText(context, "Exchange", Toast.LENGTH_SHORT).show()
+                        val temp = sourceLang
+                        sourceLang = destinationLang
+                        destinationLang = temp
+                        activity.viewModel.setLanguages(source = sourceLang, target = destinationLang)
                     },
                 //.clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
@@ -224,7 +238,7 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
 
             Image(
                 //painter = painterResource(id = R.drawable.flag_korea),
-                painter = painterResource(id = destinationFlag),
+                painter = painterResource(id = LanguageFlag.getFlagForLanguage(destinationLang)),
                 contentDescription = null,
                 modifier = Modifier
                     .padding(start = 200.dp, top = 10.dp)
@@ -235,7 +249,7 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                 contentScale = ContentScale.Crop
             )
             Text(
-                text = "Korea",
+                text = LanguageFlag.getFullNameForLanguage(destinationLang),
                 color = Color.White,
                 fontSize = 15.sp,
                 modifier = Modifier
@@ -251,7 +265,19 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                     .width(24.dp)
                     .height(24.dp)
                     .clip(CircleShape)
-                    .clickable { Toast.makeText(context, "Switch", Toast.LENGTH_SHORT).show() },
+                    .clickable {
+                        var temp: String = LanguageFlag.switchDestinationLanguage(destinationLang)
+                        if (!temp.equals("")) {
+                            if (temp.equals(sourceLang)) {
+                                Toast.makeText(context, "The Source and target languages are the same.", Toast.LENGTH_SHORT).show()
+                            } else {
+                                destinationLang = temp
+                            }
+                        } else {
+                            Toast.makeText(context, "Only Korean and English are supported", Toast.LENGTH_SHORT).show()
+                        }
+                        activity.viewModel.setLanguages(source = sourceLang, target = destinationLang)
+                   },
                 //.clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
@@ -293,7 +319,7 @@ fun SourceText() {
                 //srcTextView.setError(resultOrError.error!!.localizedMessage)
             } else {
                 //targetTextView.text = resultOrError.result
-                Toast.makeText(activity, resultOrError.result, Toast.LENGTH_LONG).show()
+                //Toast.makeText(activity, resultOrError.result, Toast.LENGTH_LONG).show()
                 translated = resultOrError.result!!
             }
         }

@@ -30,6 +30,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.camera.core.*
 import androidx.camera.core.Camera
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -39,6 +41,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.soundmind.kphone.R
 //import com.google.mlkit.showcase.translate.R
 import com.soundmind.kphone.analyzer.TextAnalyzer
@@ -61,8 +64,10 @@ class ViewGoFragment : Fragment() {
 
         // We only need to analyze the part of the image that has text, so we set crop percentages
         // to avoid analyze the entire image from the live camera feed.
-        const val DESIRED_WIDTH_CROP_PERCENT = 8
-        const val DESIRED_HEIGHT_CROP_PERCENT = 74
+        //const val DESIRED_WIDTH_CROP_PERCENT = 8
+        //const val DESIRED_HEIGHT_CROP_PERCENT = 74
+        const val DESIRED_WIDTH_CROP_PERCENT = 2
+        const val DESIRED_HEIGHT_CROP_PERCENT = 2
 
         // This is an arbitrary number we are using to keep tab of the permission
         // request. Where an app has multiple context for requesting permission,
@@ -92,6 +97,8 @@ class ViewGoFragment : Fragment() {
     private var _binding: ViewgoFragmentBinding? = null
     private val binding get() = _binding!!
 
+    lateinit var systemLanguage: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -99,6 +106,7 @@ class ViewGoFragment : Fragment() {
         //return inflater.inflate(R.layout.main_fragment, container, false)
         _binding = ViewgoFragmentBinding.inflate(inflater, container, false)
         val view = binding.root
+        systemLanguage = arguments?.getString("lang").toString()
         return view
     }
 
@@ -116,6 +124,18 @@ class ViewGoFragment : Fragment() {
 
         container = view as ConstraintLayout
         viewFinder = container.findViewById(R.id.viewfinder)
+
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(toolbar)
+
+        // Enable the back button
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        toolbar.setNavigationOnClickListener {
+            // Handle the back button click, navigate up in the hierarchy
+            activity?.finish()
+            //findNavController().navigateUp()
+        }
 
         // Initialize our background executor
         cameraExecutor = Executors.newCachedThreadPool()
@@ -147,7 +167,8 @@ class ViewGoFragment : Fragment() {
         //targetLangSelector.adapter = adapter
         binding.targetLangSelector.adapter = adapter
         //targetLangSelector.setSelection(adapter.getPosition(Language("en")))
-        binding.targetLangSelector.setSelection(adapter.getPosition(Language("en")))
+        //binding.targetLangSelector.setSelection(adapter.getPosition(Language("en")))
+        binding.targetLangSelector.setSelection(adapter.getPosition(Language(systemLanguage)))
         //targetLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         binding.targetLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(

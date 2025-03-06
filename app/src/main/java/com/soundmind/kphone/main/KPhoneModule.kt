@@ -17,7 +17,7 @@ import com.google.mlkit.nl.translate.TranslatorOptions
 
 class KPhoneModule(application: Application): AndroidViewModel(application)  {
     companion object {
-        private const val NUM_TRANSLATORS = 3
+        private const val NUM_TRANSLATORS = 5
     }
 
     private val modelManager: RemoteModelManager = RemoteModelManager.getInstance()

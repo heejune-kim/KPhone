@@ -32,6 +32,7 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import com.google.mlkit.vision.text.korean.KoreanTextRecognizerOptions
 import java.util.concurrent.Executor
 
 /**
@@ -46,7 +47,10 @@ class TextAnalyzer(
     private val imageCropPercentages: MutableLiveData<Pair<Int, Int>>
 ) : ImageAnalysis.Analyzer {
     private val detector =
-        TextRecognition.getClient(TextRecognizerOptions.Builder().setExecutor(executor).build())
+        TextRecognition.getClient(
+            KoreanTextRecognizerOptions.Builder().
+                setExecutor(executor).build())
+        //TextRecognition.getClient(TextRecognizerOptions.Builder().setExecutor(executor).build())
 
     init {
         lifecycle.addObserver(detector)
@@ -109,6 +113,7 @@ class TextAnalyzer(
             .addOnSuccessListener { visionText ->
                 // Task completed successfully
                 result.value = visionText.text
+                //Toast.makeText(context, visionText.text, Toast.LENGTH_SHORT).show()
             }
             .addOnFailureListener { exception ->
                 // Task failed with an exception

@@ -1,9 +1,12 @@
 package com.soundmind.kphone
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +52,8 @@ import com.soundmind.kphone.activity.ViewGoActivity
 import com.soundmind.kphone.ui.theme.KPhoneTheme
 import java.util.Locale
 import androidx.core.net.toUri
+import com.soundmind.kphone.activity.getActivity
+import com.soundmind.kphone.util.LanguageFlag
 
 
 interface ClickListener {
@@ -109,11 +114,19 @@ fun MyGrid(items: List<Item>, onItemClick: (Item) -> Unit) {
     */
 }
 
+fun Context.getActivity(): ComponentActivity? = when (this) {
+    is ComponentActivity -> this
+    is ContextWrapper -> baseContext.getActivity()
+    else -> null
+}
+
 @Composable
 fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
     val context = LocalContext.current
     val bgColor = Color(ContextCompat.getColor(context, R.color.topFxGoBox))
     val bgInner = Color(ContextCompat.getColor(context, R.color.topInnerBox))
+    val activity = context.getActivity() as? MainActivity
+    val flag = LanguageFlag.getFlagForLanguage(activity!!.systemLanguage)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -155,7 +168,8 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                         )
                         Box(modifier = Modifier) {
                             Image(
-                                painter = painterResource(id = R.drawable.flag_vietnam),
+                                //painter = painterResource(id = R.drawable.flag_vietnam),
+                                painter = painterResource(id = flag),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .padding(15.dp, 10.dp)
@@ -291,11 +305,11 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
 
 //class MainActivity : ComponentActivity() {
 class MainActivity : AppCompatActivity() {
+    // Get system's language
+    val systemLanguage: String = Locale.getDefault().toString().subSequence(0, 2).toString()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Get system's language
-        val bcp47Code = Locale.getDefault().toString()
 
         // MLKit supported languages
         val availableLanguages: List<String> = TranslateLanguage.getAllLanguages().map { it }
@@ -329,17 +343,19 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
+    val context = LocalContext.current
+    val activity = context.getActivity() as? MainActivity
+    val systemLanguage = activity?.systemLanguage
     //modifier
     //    .background(Color.Black)
     //    .fillMaxSize()
     val phoneNumber = "02-111-5555"
-    val context = LocalContext.current
     val items = listOf(
         Item(R.drawable.top_linggo, 'G', R.drawable.top_typing, "LingGo", object : ClickListener {
             override fun onClick() {
                 //println("LingGo clicked")
                 val intent = Intent(context, LingGoActivity::class.java)
-                //intent.putExtra("key", "value")
+                intent.putExtra("lang", systemLanguage)
                 context.startActivity(intent)
                 //context.startActivity(LingGoActivity.newIntent(context))
             }
@@ -348,7 +364,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             override fun onClick() {
                 //println("ViewGo clicked")
                 val intent = Intent(context, ViewGoActivity::class.java)
-                //intent.putExtra("key", "value")
+                intent.putExtra("lang", systemLanguage)
                 context.startActivity(intent)
             }
         }),
@@ -356,7 +372,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
             override fun onClick() {
                 //println("ViewGo clicked")
                 val intent = Intent(context, FxGoActivity::class.java)
-                //intent.putExtra("key", "value")
+                intent.putExtra("lang", systemLanguage)
                 context.startActivity(intent)
             }
         }),
