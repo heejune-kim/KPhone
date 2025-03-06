@@ -84,5 +84,13 @@ dependencies {
     // Feature module support for Fragments
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 
+    def retrofit_version = "2.9.0"
+    implementation libs.retrofit
+    implementation libs.converter.moshi
+
+    def moshi_version = "1.12.0"
+    implementation libs.moshi
+    implementation libs.moshi.kotlin
+
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition-korean:16.0.1'
 }

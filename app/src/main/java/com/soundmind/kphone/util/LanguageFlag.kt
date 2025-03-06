@@ -33,5 +33,19 @@ class LanguageFlag {
                 else -> ""
             }
         }
+
+        fun getCurrencyCodeForLanguage(language: String): String {
+            return when (language) {
+                "en" -> "USD"
+                "es" -> "EUR"
+                "fr" -> "EUR"
+                "de" -> "EUR"
+                "vi" -> "VND"
+                "ja" -> "JPY"
+                "ko" -> "KRW"
+                "zh" -> "CNY"
+                else -> "USD"
+            }
+        }
     }
 }

@@ -164,12 +164,9 @@ class ViewGoFragment : Fragment() {
             android.R.layout.simple_spinner_dropdown_item, viewModel.availableLanguages
         )
 
-        //targetLangSelector.adapter = adapter
+        /*
         binding.targetLangSelector.adapter = adapter
-        //targetLangSelector.setSelection(adapter.getPosition(Language("en")))
-        //binding.targetLangSelector.setSelection(adapter.getPosition(Language("en")))
         binding.targetLangSelector.setSelection(adapter.getPosition(Language(systemLanguage)))
-        //targetLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
         binding.targetLangSelector.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -182,8 +179,14 @@ class ViewGoFragment : Fragment() {
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
+        */
 
-        viewModel.sourceLang.observe(viewLifecycleOwner, Observer { binding.srcLang.text = it.displayName })
+        viewModel.targetLang.value = Language(systemLanguage)
+
+        viewModel.sourceLang.observe(viewLifecycleOwner, Observer {
+            //binding.srcLang.text = it.displayName
+            //val str = it.displayName
+        })
         viewModel.translatedText.observe(viewLifecycleOwner, Observer { resultOrError ->
             resultOrError?.let {
                 if (it.error != null) {
@@ -277,7 +280,10 @@ class ViewGoFragment : Fragment() {
                     )
                 )
             }
-        viewModel.sourceText.observe(viewLifecycleOwner, Observer { binding.srcText.text = it })
+        viewModel.sourceText.observe(viewLifecycleOwner, Observer {
+            //binding.srcText.text = it
+            val str = it
+        })
         viewModel.imageCropPercentages.observe(viewLifecycleOwner,
             Observer { drawOverlay(binding.overlay.holder, it.first, it.second) })
 

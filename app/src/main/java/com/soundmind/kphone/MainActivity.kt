@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,6 +34,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,7 +58,9 @@ import com.soundmind.kphone.ui.theme.KPhoneTheme
 import java.util.Locale
 import androidx.core.net.toUri
 import com.soundmind.kphone.activity.getActivity
+import com.soundmind.kphone.main.FxGoViewModel
 import com.soundmind.kphone.util.LanguageFlag
+import kotlin.getValue
 
 
 interface ClickListener {
@@ -123,9 +130,16 @@ fun Context.getActivity(): ComponentActivity? = when (this) {
 @Composable
 fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
     val context = LocalContext.current
+    val activity = context.getActivity() as MainActivity
+    val systemLanguage = activity.systemLanguage
+    val viewModel = activity.fxViewModel
+    var exchangeRate by remember { mutableStateOf(-1f) }
+
+    viewModel.exchangeRate.observe(activity) {
+        exchangeRate = viewModel.exchangeRate.value!!
+    }
     val bgColor = Color(ContextCompat.getColor(context, R.color.topFxGoBox))
     val bgInner = Color(ContextCompat.getColor(context, R.color.topInnerBox))
-    val activity = context.getActivity() as? MainActivity
     val flag = LanguageFlag.getFlagForLanguage(activity!!.systemLanguage)
     Card(
         modifier = Modifier
@@ -205,7 +219,7 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                         .clip(RoundedCornerShape(20.dp)),
                                 ) {
                                     Text(
-                                        "Currency",
+                                        exchangeRate.toString(),
                                         color = Color.White,
                                         fontSize = 11.sp,
                                         //modifier = Modifier.padding(start = 84.dp, top = 10.dp),
@@ -308,9 +322,12 @@ class MainActivity : AppCompatActivity() {
     // Get system's language
     val systemLanguage: String = Locale.getDefault().toString().subSequence(0, 2).toString()
 
+    val fxViewModel: FxGoViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        fxViewModel.getExchangeRate(systemLanguage)
         // MLKit supported languages
         val availableLanguages: List<String> = TranslateLanguage.getAllLanguages().map { it }
         val mlkit_langages = availableLanguages.toString()
@@ -344,12 +361,17 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val activity = context.getActivity() as? MainActivity
-    val systemLanguage = activity?.systemLanguage
-    //modifier
-    //    .background(Color.Black)
-    //    .fillMaxSize()
-    val phoneNumber = "02-111-5555"
+    val activity = context.getActivity() as MainActivity
+    val systemLanguage = activity.systemLanguage
+    val viewModel = activity.fxViewModel
+    var exchangeRate by remember { mutableStateOf(-1f) }
+
+    viewModel.exchangeRate.observe(activity) {
+        exchangeRate = viewModel.exchangeRate.value!!
+    }
+
+    val phoneNumber = "070-4643-8843"
+
     val items = listOf(
         Item(R.drawable.top_linggo, 'G', R.drawable.top_typing, "LingGo", object : ClickListener {
             override fun onClick() {
@@ -376,7 +398,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 context.startActivity(intent)
             }
         }),
-        Item(R.drawable.top_support, 'S', R.drawable.top_support_phone, "02-111-5555", object : ClickListener {
+        Item(R.drawable.top_support, 'S', R.drawable.top_support_phone, "", object : ClickListener {
             override fun onClick() {
                 val intent = Intent(Intent.ACTION_DIAL).apply {
                     data = "tel:$phoneNumber".toUri()

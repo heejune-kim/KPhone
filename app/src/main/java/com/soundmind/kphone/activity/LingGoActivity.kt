@@ -176,7 +176,7 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                 painter = painterResource(id = LanguageFlag.getFlagForLanguage(sourceLang)),
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(15.dp, 10.dp)
+                    .padding(start=15.dp, top=10.dp)
                     .width(30.dp)
                     .height(30.dp)
                     .clip(CircleShape),
@@ -188,7 +188,7 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                 color = Color.White,
                 fontSize = 15.sp,
                 modifier = Modifier
-                    .padding(60.dp, 12.dp)
+                    .padding(start=55.dp, top=12.dp)
                     //.fillMaxWidth(),
             )
 
@@ -222,9 +222,10 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                 painter = painterResource(id = R.drawable.linggo_exchange),
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(160.dp, 10.dp)
+                    .padding(start = 120.dp, top=10.dp)
                     .width(24.dp)
                     .height(24.dp)
+                    .background(Color.LightGray)
                     .clickable {
                         //Toast.makeText(context, "Exchange", Toast.LENGTH_SHORT).show()
                         val temp = sourceLang
@@ -241,7 +242,7 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                 painter = painterResource(id = LanguageFlag.getFlagForLanguage(destinationLang)),
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(start = 200.dp, top = 10.dp)
+                    .padding(start = 170.dp, top = 10.dp)
                     .width(30.dp)
                     .height(30.dp)
                     .clip(CircleShape),
@@ -253,7 +254,7 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                 color = Color.White,
                 fontSize = 15.sp,
                 modifier = Modifier
-                    .padding(start = 250.dp, top = 12.dp)
+                    .padding(start = 210.dp, top = 12.dp)
                     //.fillMaxWidth(),
             )
 
@@ -261,7 +262,7 @@ fun LingGoScreen(modifier: Modifier = Modifier) {
                 painter = painterResource(id = R.drawable.linggo_switch),
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(start = 300.dp, top = 10.dp)
+                    .padding(start = 260.dp, top = 10.dp)
                     .width(24.dp)
                     .height(24.dp)
                     .clip(CircleShape)

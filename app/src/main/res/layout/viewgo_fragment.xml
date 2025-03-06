@@ -61,6 +61,7 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent=".5" />
 
+    <!--
     <TextView
         android:id="@+id/srcLang"
         style="@style/SrcLangText"
@@ -86,7 +87,7 @@
         app:layout_constraintBottom_toTopOf="@+id/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/srcLang">
+        app:layout_constraintTop_toBottomOf="@id/middle">
 
         <TextView
             android:id="@+id/srcText"
@@ -117,18 +118,19 @@
         android:layout_marginStart="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/divider" />
+    -->
 
     <ScrollView
         android:id="@+id/translatedTextScrollView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="300dp"
         android:layout_marginBottom="4dp"
         android:fillViewport="true"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/targetLangSelector">
+        app:layout_constraintTop_toBottomOf="@+id/viewfinder">
 
         <TextView
             android:id="@+id/translatedText"
@@ -177,9 +179,10 @@
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:visibility="invisible"
-        app:layout_constraintStart_toEndOf="@+id/targetLangSelector"
-        app:layout_constraintTop_toTopOf="@id/targetLangSelector"
-        app:layout_constraintBottom_toBottomOf="@id/targetLangSelector" />
+        app:layout_constraintStart_toStartOf="@+id/translatedTextScrollView"
+        app:layout_constraintTop_toTopOf="@id/translatedTextScrollView"
+        app:layout_constraintBottom_toBottomOf="@id/translatedTextScrollView"
+        />
 
     <TextView
         android:id="@+id/progressText"
