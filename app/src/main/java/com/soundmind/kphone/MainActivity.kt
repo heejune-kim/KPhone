@@ -254,7 +254,7 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                             modifier = Modifier
                                 //.size(100.dp)
                                 //.align(Alignment.TopStart)
-                                .padding(10.dp, 10.dp)
+                                .padding(start=10.dp, top=10.dp)
                                 .width(120.dp)
                                 .height(30.dp)
                                 .clip(RoundedCornerShape(8.dp)),
@@ -266,14 +266,14 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                 contentDescription = null,
                                 modifier = Modifier
                                     //.padding(start = 5.dp, top = 5.dp)
-                                    .width(40.dp)
+                                    .width(35.dp)
                                     .height(20.dp)
                             )
                             Text(
                                 text = item.text,
                                 color = Color.Black,
-                                fontSize = 13.sp,
-                                modifier = Modifier.padding(start = 50.dp, top = 0.dp),
+                                fontSize = 11.sp,
+                                modifier = Modifier.padding(start = 30.dp, top = 0.dp),
                                 maxLines = 2
                             )
                         }
@@ -398,7 +398,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 context.startActivity(intent)
             }
         }),
-        Item(R.drawable.top_support, 'S', R.drawable.top_support_phone, "", object : ClickListener {
+        Item(R.drawable.top_support, 'S', R.drawable.top_support_phone, phoneNumber, object : ClickListener {
             override fun onClick() {
                 val intent = Intent(Intent.ACTION_DIAL).apply {
                     data = "tel:$phoneNumber".toUri()
