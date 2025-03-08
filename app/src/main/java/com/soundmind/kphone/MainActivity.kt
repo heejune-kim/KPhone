@@ -1,15 +1,18 @@
 package com.soundmind.kphone
 
+import android.app.AppOpsManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -57,11 +60,14 @@ import com.soundmind.kphone.activity.ViewGoActivity
 import com.soundmind.kphone.ui.theme.KPhoneTheme
 import java.util.Locale
 import androidx.core.net.toUri
+import androidx.lifecycle.lifecycleScope
 import com.soundmind.kphone.activity.getActivity
 import com.soundmind.kphone.main.FxGoViewModel
+import com.soundmind.kphone.util.ConnectivityObserver
 import com.soundmind.kphone.util.LanguageFlag
+import com.soundmind.kphone.util.NetworkConnectivityObserver
+import kotlinx.coroutines.launch
 import kotlin.getValue
-
 
 interface ClickListener {
     fun onClick()
@@ -324,10 +330,35 @@ class MainActivity : AppCompatActivity() {
 
     val fxViewModel: FxGoViewModel by viewModels()
 
+    var isNetworkAvailable = false
+    private lateinit var connectivityObserver: ConnectivityObserver
+    private fun collectConnectivityStatus() {
+        lifecycleScope.launch {
+            connectivityObserver.observe().collect {
+                when (it) {
+                    ConnectivityObserver.Status.Available -> {
+                        isNetworkAvailable = true
+                        fxViewModel.getExchangeRate(systemLanguage)
+                    }
+
+                    ConnectivityObserver.Status.Unavailable -> {
+                        isNetworkAvailable = false
+                        Toast.makeText(applicationContext, "Warning!! Network is unavailable", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        fxViewModel.getExchangeRate(systemLanguage)
+        connectivityObserver = NetworkConnectivityObserver(applicationContext)
+        collectConnectivityStatus()
+        if (isNetworkAvailable) {
+            //fxViewModel.getExchangeRate(systemLanguage)
+        }
         // MLKit supported languages
         val availableLanguages: List<String> = TranslateLanguage.getAllLanguages().map { it }
         val mlkit_langages = availableLanguages.toString()
