@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -84,11 +86,11 @@ data class FxItem(val imageResId: Int, val text: String, val type: Char, val lis
 fun FxGrid(items: List<FxItem>, onItemClick: (FxItem) -> Unit) {
     LazyVerticalGrid(
         modifier = Modifier
-            .padding(top = 270.dp),
+            .padding(bottom = 30.dp),
         columns = GridCells.Fixed(4),
-        contentPadding = PaddingValues(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        contentPadding = PaddingValues(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(items) { item ->
             FxGridItem(item = item, onItemClick = onItemClick)
@@ -103,7 +105,7 @@ fun FxGridItem(item: FxItem, onItemClick: (FxItem) -> Unit) {
         contentDescription = null,
         modifier = Modifier
             .background(Color.Transparent)
-            .size(72.dp)
+            .size(82.dp)
             .clickable { onItemClick(item) },
         //.clip(RoundedCornerShape(8.dp)),
         contentScale = ContentScale.Fit
@@ -478,142 +480,168 @@ fun FxScreen(modifier: Modifier = Modifier) {
             }
         }),
     )
-    Box (
-        modifier = Modifier
-            .background(Color.Black)
-            .padding(top = 20.dp)
-            .fillMaxWidth()
+    Column(
+        modifier = modifier
+            .fillMaxSize()
     ) {
-        Image(
-            painter = painterResource(id = LanguageFlag.getFlagForLanguage(sourceLang)),
-            contentDescription = null,
+        // Select nation's currency
+        Row(
             modifier = Modifier
-                .padding(15.dp, 10.dp)
-                .width(30.dp)
-                .height(30.dp)
-                .clip(CircleShape),
-            //.clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop,
-            )
-        Text(
-            text = LanguageFlag.getCurrencyCodeForLanguage(sourceLang),
-            color = Color.White,
-            fontSize = 15.sp,
-            modifier = Modifier
-                .padding(60.dp, 12.dp)
-            //.fillMaxWidth(),
-        )
-        Image(
-            painter = painterResource(id = R.drawable.linggo_exchange),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(start = 140.dp, top = 10.dp)
-                .width(24.dp)
-                .height(24.dp)
                 .background(Color.Black)
-                .clickable {
-                    //Toast.makeText(context, "Exchange", Toast.LENGTH_SHORT).show()
-                    val temp = sourceLang
-                    sourceLang = destinationLang
-                    destinationLang = temp
-                    viewModel.changeDirection()
-                    //activity.viewModel.setLanguages(source = sourceLang, target = destinationLang)
-                },
-            //.clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop,
-        )
-        Image(
-            //painter = painterResource(id = R.drawable.flag_korea),
-            painter = painterResource(id = LanguageFlag.getFlagForLanguage(destinationLang)),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(start = 200.dp, top = 10.dp)
-                .width(30.dp)
-                .height(30.dp)
-                .clip(CircleShape),
-            //.clip(RoundedCornerShape(8.dp)),
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = LanguageFlag.getCurrencyCodeForLanguage(destinationLang),
-            color = Color.White,
-            fontSize = 15.sp,
-            modifier = Modifier
-                .padding(start = 250.dp, top = 12.dp)
-            //.fillMaxWidth(),
-        )
+                .fillMaxWidth()
+                .padding(top = 20.dp, start = 20.dp, end = 20.dp)
+                .height(50.dp)
+        ) {
+            Image(
+                painter = painterResource(id = LanguageFlag.getFlagForLanguage(sourceLang)),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(start = 30.dp, top = 10.dp)
+                    .width(30.dp)
+                    .height(30.dp)
+                    .clip(CircleShape),
+                //.clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop,
+            )
+            Text(
+                text = LanguageFlag.getCurrencyCodeForLanguage(sourceLang),
+                color = Color.White,
+                fontSize = 15.sp,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 12.dp)
+                    .width(80.dp)
+                //.fillMaxWidth(),
+            )
+            Image(
+                painter = painterResource(id = R.drawable.linggo_exchange),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(start = 20.dp, top = 10.dp)
+                    .width(24.dp)
+                    .height(24.dp)
+                    .background(Color.Black)
+                    .clickable {
+                        val temp = sourceLang
+                        sourceLang = destinationLang
+                        destinationLang = temp
+                        viewModel.changeDirection()
+                    },
+                //.clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop,
+            )
+            Image(
+                painter = painterResource(id = LanguageFlag.getFlagForLanguage(destinationLang)),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(start = 30.dp, top = 10.dp)
+                    .width(30.dp)
+                    .height(30.dp)
+                    .clip(CircleShape),
+                //.clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+            Text(
+                text = LanguageFlag.getCurrencyCodeForLanguage(destinationLang),
+                color = Color.White,
+                fontSize = 15.sp,
+                modifier = Modifier
+                    .padding(start = 10.dp, top = 12.dp)
+                    .width(80.dp)
+                //.fillMaxWidth(),
+            )
+        }
 
-        Text(
-            text = "KRW ${exchangeRate.toString()} = 1 ${currencyCode}",
-            color = Color.White,
-            fontSize = 14.sp,
+        // Exchange rate
+        Row(
             modifier = Modifier
-                .padding(start = 20.dp, top = 80.dp)
-            //.fillMaxWidth(),
-        )
-        Text(
-            text = updated_at,
-            color = Color.White,
-            fontSize = 13.sp,
-            modifier = Modifier
-                .padding(start = 180.dp, top = 80.dp)
-            //.fillMaxWidth(),
-        )
+                .height(30.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "KRW ${exchangeRate.toString()} = 1 ${currencyCode}",
+                color = Color.White,
+                fontSize = 14.sp,
+                modifier = Modifier.weight(1f)
+                    .padding(start = 20.dp, top = 10.dp),
+                textAlign = TextAlign.Start // Left align
+                //.fillMaxWidth(),
+            )
+            Text(
+                text = updated_at,
+                color = Color.White,
+                fontSize = 13.sp,
+                modifier = Modifier.weight(1f)
+                    .padding(end = 20.dp, top = 10.dp),
+                textAlign = TextAlign.End // Left align
+                //.fillMaxWidth(),
+            )
+        }
 
         ////////// Source currency
-        Text(
-            text = sourceCurrency,
-            color = Color.Blue,
-            fontSize = 30.sp,
+        Row(
             modifier = Modifier
-                .padding(start = 20.dp, top = 140.dp)
-            //.fillMaxWidth(),
-        )
-        Text(
-            text = calculatedSource.toString(),
-            color = Color.Blue,
-            fontSize = 30.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-                .padding(top = 140.dp),
-                //.padding(start = 180.dp, top = 140.dp),
-            textAlign = TextAlign.End
-            //.fillMaxWidth(),
-        )
+                .height(120.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Bottom
+        ) {
+            Text(
+                text = sourceCurrency,
+                color = colorResource(R.color.fxGo_SourceValue),
+                fontSize = 35.sp,
+                modifier = Modifier.weight(1f)
+                    .padding(start = 20.dp, top = 90.dp),
+                textAlign = TextAlign.Start
+            )
+            Text(
+                text = calculatedSource.toString(),
+                color = colorResource(R.color.fxGo_SourceValue),
+                fontSize = 35.sp,
+                modifier = Modifier.weight(1f)
+                    .padding(end = 20.dp, top = 90.dp),
+                textAlign = TextAlign.End
+            )
+        }
 
         // Target currency
-        Text(
-            text = destinationCurrency,
-            color = Color.White,
-            fontSize = 30.sp,
+        Row(
             modifier = Modifier
-                .padding(start = 20.dp, top = 180.dp)
-            //.fillMaxWidth(),
-        )
-        Text(
-            text = calculatedDestination.toString(),
-            color = Color.White,
-            fontSize = 30.sp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 10.dp)
-                .padding(top = 180.dp),
-                //.padding(start = 180.dp, top = 180.dp),
-            textAlign = TextAlign.End
-        )
+                .height(100.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.Top
+        ) {
+            Text(
+                text = destinationCurrency,
+                color = Color.White,
+                fontSize = 35.sp,
+                modifier = Modifier.weight(1f)
+                    .padding(start = 20.dp, top = 0.dp),
+                textAlign = TextAlign.Start
+            )
+            Text(
+                text = calculatedDestination.toString(),
+                color = Color.White,
+                fontSize = 35.sp,
+                modifier = Modifier.weight(1f)
+                    .padding(end = 20.dp, top = 0.dp),
+                textAlign = TextAlign.End
+            )
 
+        }
+        FxGrid(items = items) { item ->
+            //Toast.makeText(context, "Clicked: ${item.text}", Toast.LENGTH_SHORT).show()
+            //println("Clicked: ${item.text}")
+            item.listener.onClick(item)
+            // Handle item click here
+        }
+        //Text(
+        //    text = "Hello $name!",
+        //    modifier = modifier
+        //)
     }
-    FxGrid(items = items) { item ->
-        //Toast.makeText(context, "Clicked: ${item.text}", Toast.LENGTH_SHORT).show()
-        //println("Clicked: ${item.text}")
-        item.listener.onClick(item)
-        // Handle item click here
-    }
-    //Text(
-    //    text = "Hello $name!",
-    //    modifier = modifier
-    //)
 }
 
 @Preview(showBackground = true)

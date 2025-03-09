@@ -21,10 +21,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -48,6 +50,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,6 +67,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.soundmind.kphone.activity.getActivity
 import com.soundmind.kphone.main.FxGoViewModel
+import com.soundmind.kphone.main.KPhoneModule
 import com.soundmind.kphone.util.ConnectivityObserver
 import com.soundmind.kphone.util.LanguageFlag
 import com.soundmind.kphone.util.NetworkConnectivityObserver
@@ -139,10 +144,10 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
     val activity = context.getActivity() as MainActivity
     val systemLanguage = activity.systemLanguage
     val viewModel = activity.fxViewModel
-    var exchangeRate by remember { mutableStateOf(-1f) }
+    var exchangeRate by remember { mutableStateOf("No value") }
 
     viewModel.exchangeRate.observe(activity) {
-        exchangeRate = viewModel.exchangeRate.value!!
+        exchangeRate = "1 = ${viewModel.exchangeRate.value!!}"
     }
     val bgColor = Color(ContextCompat.getColor(context, R.color.topFxGoBox))
     val bgInner = Color(ContextCompat.getColor(context, R.color.topInnerBox))
@@ -180,7 +185,7 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                 //.size(100.dp)
                                 //.align(Alignment.TopStart)
                                 .padding(10.dp, 10.dp)
-                                .width(70.dp)
+                                .width(80.dp)
                                 .height(16.dp)
                                 //.clip(RoundedCornerShape(8.dp))
                             ,
@@ -212,7 +217,7 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                     text = item.text,
                                     color = Color.White,
                                     fontSize = 11.sp,
-                                    modifier = Modifier.padding(start = 84.dp, top = 10.dp),
+                                    modifier = Modifier.padding(start = 90.dp, top = 17.dp),
                                     maxLines = 2
                                 )
                             } else {
@@ -225,11 +230,14 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                         .clip(RoundedCornerShape(20.dp)),
                                 ) {
                                     Text(
-                                        exchangeRate.toString(),
+                                        text = exchangeRate.toString(),
                                         color = Color.White,
                                         fontSize = 11.sp,
-                                        //modifier = Modifier.padding(start = 84.dp, top = 10.dp),
-                                        maxLines = 2
+                                        modifier = Modifier
+                                            .padding(top = 3.dp)
+                                            .fillMaxSize(),
+                                        //maxLines = 2,
+                                        textAlign = TextAlign.Center
                                     )
                                     //Text("PPP", color = Color.White)
                                 }
@@ -266,20 +274,22 @@ fun GridItem(item: Item, onItemClick: (Item) -> Unit) {
                                 .clip(RoundedCornerShape(8.dp)),
                             contentScale = ContentScale.Fit
                         )
-                        Box(modifier = Modifier) {
+                        Row(modifier = Modifier) {
                             Image(
                                 painter = painterResource(id = item.subImage),
                                 contentDescription = null,
                                 modifier = Modifier
-                                    //.padding(start = 5.dp, top = 5.dp)
-                                    .width(35.dp)
-                                    .height(20.dp)
+                                    .padding(start = 10.dp, top = 5.dp)
+                                    .size(35.dp)
+                                    //.width(35.dp)
+                                    //.height(20.dp)
                             )
                             Text(
                                 text = item.text,
                                 color = Color.Black,
-                                fontSize = 11.sp,
-                                modifier = Modifier.padding(start = 30.dp, top = 0.dp),
+                                fontSize = 18.sp,
+                                modifier = Modifier
+                                    .padding(start = 10.dp, top = 10.dp),
                                 maxLines = 2
                             )
                         }
@@ -329,6 +339,7 @@ class MainActivity : AppCompatActivity() {
     val systemLanguage: String = Locale.getDefault().toString().subSequence(0, 2).toString()
 
     val fxViewModel: FxGoViewModel by viewModels()
+    val kphone: KPhoneModule by viewModels()
 
     var isNetworkAvailable = false
     private lateinit var connectivityObserver: ConnectivityObserver
@@ -339,11 +350,13 @@ class MainActivity : AppCompatActivity() {
                     ConnectivityObserver.Status.Available -> {
                         isNetworkAvailable = true
                         fxViewModel.getExchangeRate(systemLanguage)
+                        kphone.checkAndDownload(systemLanguage)
+                        //kpnone.downloadAllRequiredLanguages(systemLanguage)
                     }
 
                     ConnectivityObserver.Status.Unavailable -> {
                         isNetworkAvailable = false
-                        Toast.makeText(applicationContext, "Warning!! Network is unavailable", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(applicationContext, "Network is unavailable", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -396,37 +409,54 @@ fun MainScreen(modifier: Modifier = Modifier) {
     val systemLanguage = activity.systemLanguage
     val viewModel = activity.fxViewModel
     var exchangeRate by remember { mutableStateOf(-1f) }
+    val kphone = activity.kphone
 
+    var linggoMessage by remember { mutableStateOf(context.getString(R.string.top_linggo_desc)) }
+    var viewgoMessage by remember { mutableStateOf(context.getString(R.string.top_viewgo_desc)) }
+
+    kphone.linggoTranslated.observe(activity) {
+            linggoMessage = kphone.linggoTranslated.value!!
+    }
+    kphone.viewgoTranslated.observe(activity) {
+        viewgoMessage = kphone.viewgoTranslated.value!!
+    }
     viewModel.exchangeRate.observe(activity) {
         exchangeRate = viewModel.exchangeRate.value!!
     }
+    kphone.translateTop(systemLanguage, linggoMessage, viewgoMessage)
 
     val phoneNumber = "070-4643-8843"
 
     val items = listOf(
-        Item(R.drawable.top_linggo, 'G', R.drawable.top_typing, "LingGo", object : ClickListener {
+        Item(R.drawable.top_linggo, 'G', R.drawable.top_typing, linggoMessage, object : ClickListener {
             override fun onClick() {
-                //println("LingGo clicked")
+                ///*
                 val intent = Intent(context, LingGoActivity::class.java)
                 intent.putExtra("lang", systemLanguage)
                 context.startActivity(intent)
-                //context.startActivity(LingGoActivity.newIntent(context))
+                //*/
+                //kphone.testPrintAllModel()
             }
         }),
-        Item(R.drawable.top_viewgo, 'G', R.drawable.top_camera, "ViewGo", object : ClickListener {
+        Item(R.drawable.top_viewgo, 'G', R.drawable.top_camera, viewgoMessage, object : ClickListener {
             override fun onClick() {
-                //println("ViewGo clicked")
+                ///*
                 val intent = Intent(context, ViewGoActivity::class.java)
                 intent.putExtra("lang", systemLanguage)
                 context.startActivity(intent)
+                //*/
+                //kphone.testTranslate(language = systemLanguage, "Don't worry be happy~ happy master")
+                //kphone.testDownload("vi")
             }
         }),
         Item(R.drawable.top_fxgo, 'G', -1, "", object : ClickListener {
             override fun onClick() {
-                //println("ViewGo clicked")
+                ///*
                 val intent = Intent(context, FxGoActivity::class.java)
                 intent.putExtra("lang", systemLanguage)
                 context.startActivity(intent)
+                //*/
+                //kphone.testDeleteAllModel()
             }
         }),
         Item(R.drawable.top_support, 'S', R.drawable.top_support_phone, phoneNumber, object : ClickListener {
@@ -455,7 +485,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
         })
     )
     MyGrid(items = items) { item ->
-        Toast.makeText(context, "Clicked: ${item.text}", Toast.LENGTH_SHORT).show()
+        //Toast.makeText(context, "Clicked: ${item.text}", Toast.LENGTH_SHORT).show()
         println("Clicked: ${item.text}")
         item.listener.onClick()
         // Handle item click here

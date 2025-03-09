@@ -14,4 +14,9 @@
     <color name="topOuterBox">#7f7f7f7f</color>
     <color name="topInnerBox">#7fe4e4e4</color>
     <color name="topFxGoBox">#ff263564</color>
+
+    <color name="fxGo_SourceValue">#ff4BB6F3</color>
+
+    <color name="linggoLanguages">#60ffffff</color>
+    <color name="linggoInput">#10ffffff</color>
 </resources>
