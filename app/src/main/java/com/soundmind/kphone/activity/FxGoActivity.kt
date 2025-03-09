@@ -74,6 +74,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import net.objecthunter.exp4j.Expression
 import net.objecthunter.exp4j.ExpressionBuilder
+import java.util.Locale
 
 interface ClickListener {
     fun onClick(item: FxItem)
@@ -164,7 +165,8 @@ class FxGoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        systemLanguage = intent.getStringExtra("lang").toString()
+        //systemLanguage = intent.getStringExtra("lang").toString()
+        systemLanguage = Locale.getDefault().toString().subSequence(0, 2).toString()
         //val act: MainActivity = activity as MainActivity
         //act.supportActionBar?.hide()
 

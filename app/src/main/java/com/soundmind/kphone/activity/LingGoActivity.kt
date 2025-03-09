@@ -100,6 +100,7 @@ import com.soundmind.kphone.util.LanguageFlag
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import java.util.Locale
 
 @Composable
 fun Modifier.verticalColumnScrollbar(
@@ -209,7 +210,8 @@ class LingGoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        systemLanguage = intent.getStringExtra("lang").toString()
+        //systemLanguage = intent.getStringExtra("lang").toString()
+        systemLanguage = Locale.getDefault().toString().subSequence(0, 2).toString()
 
         viewModel.checkAndDownload(systemLanguage)
         /*

@@ -40,13 +40,15 @@ import com.soundmind.kphone.R
 import com.soundmind.kphone.main.LingGoFragment
 import com.soundmind.kphone.main.ViewGoFragment
 import com.soundmind.kphone.ui.theme.KPhoneTheme
+import java.util.Locale
 
 class ViewGoActivity : AppCompatActivity() {
     lateinit var systemLanguage: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_translateshowcase_activity)
-        systemLanguage = intent.getStringExtra("lang").toString()
+        //systemLanguage = intent.getStringExtra("lang").toString()
+        systemLanguage = Locale.getDefault().toString().subSequence(0, 2).toString()
         val fragment = ViewGoFragment.newInstance()
         val bundle = Bundle()
         bundle.putString("lang", systemLanguage)

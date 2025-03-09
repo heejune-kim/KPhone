@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <!--
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        >
+        -->
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:paddingStart="10dp"
+            android:id="@+id/buttonLingGo"
+            android:background="@drawable/linggo_topleft"
+            tools:ignore="MissingConstraints" />
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:id="@+id/buttonViewGo"
+            android:background="@drawable/top_viewgo"
+            tools:ignore="MissingConstraints" />
+    <!--</LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        >
+        -->
+        <Button
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:id="@+id/buttonFxGo"
+            android:background="@drawable/top_fxgo"
+            tools:ignore="MissingConstraints" />
+    <!--
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button3"
+            android:text="@string/launch_k_hone"
+            tools:ignore="MissingConstraints" />
+    </LinearLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button4"
+            android:text="@string/launch_k_hone"
+            tools:ignore="MissingConstraints" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button5"
+            android:text="@string/launch_k_hone"
+            tools:ignore="MissingConstraints" />
+    </LinearLayout>
+    -->
+
+</LinearLayout>

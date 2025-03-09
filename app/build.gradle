@@ -92,5 +92,8 @@ dependencies {
     implementation libs.moshi
     implementation libs.moshi.kotlin
 
+    //implementation libs.glance.appwidget
+    //implementation libs.glance.material
+
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition-korean:16.0.1'
 }
