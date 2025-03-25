@@ -43,6 +43,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.LingGoActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".activity.ViewGoPreviewActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".activity.ViewGoActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity android:name=".activity.FxGoActivity" android:theme="@style/Theme.AppCompat.NoActionBar" />
     <!-- Automatically download the text recognition model after app install. -->

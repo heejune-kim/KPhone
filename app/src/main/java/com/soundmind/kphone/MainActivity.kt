@@ -65,6 +65,7 @@ import com.soundmind.kphone.ui.theme.KPhoneTheme
 import java.util.Locale
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
+import com.soundmind.kphone.activity.ViewGoPreviewActivity
 import com.soundmind.kphone.activity.getActivity
 import com.soundmind.kphone.main.FxGoViewModel
 import com.soundmind.kphone.main.KPhoneModule
@@ -441,7 +442,8 @@ fun MainScreen(modifier: Modifier = Modifier) {
         Item(R.drawable.top_viewgo, 'G', R.drawable.top_camera, viewgoMessage, object : ClickListener {
             override fun onClick() {
                 ///*
-                val intent = Intent(context, ViewGoActivity::class.java)
+                //val intent = Intent(context, ViewGoActivity::class.java)
+                val intent = Intent(context, ViewGoPreviewActivity::class.java)
                 intent.putExtra("lang", systemLanguage)
                 context.startActivity(intent)
                 //*/
