@@ -87,7 +87,7 @@ data class FxItem(val imageResId: Int, val text: String, val type: Char, val lis
 fun FxGrid(items: List<FxItem>, onItemClick: (FxItem) -> Unit) {
     LazyVerticalGrid(
         modifier = Modifier
-            .padding(bottom = 30.dp),
+            .padding(bottom = 10.dp),
         columns = GridCells.Fixed(4),
         contentPadding = PaddingValues(8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -106,7 +106,7 @@ fun FxGridItem(item: FxItem, onItemClick: (FxItem) -> Unit) {
         contentDescription = null,
         modifier = Modifier
             .background(Color.Transparent)
-            .size(82.dp)
+            .size(80.dp)
             .clickable { onItemClick(item) },
         //.clip(RoundedCornerShape(8.dp)),
         contentScale = ContentScale.Fit
@@ -350,6 +350,8 @@ fun FxScreen(modifier: Modifier = Modifier) {
 
     var sourceCurrency = viewModel.getSourceCurrency()
     var destinationCurrency = viewModel.getDestinationCurrency()
+    var sourceUnit = viewModel.getSourceUnit()
+    var destinationUnit = viewModel.getDestinationUnit()
 
     var calculatedSource by remember { mutableStateOf(0f) }
     var calculatedDestination by remember { mutableStateOf(0f) }
@@ -591,15 +593,15 @@ fun FxScreen(modifier: Modifier = Modifier) {
         ) {
             Text(
                 text = sourceCurrency,
-                color = colorResource(R.color.fxGo_SourceValue),
+                color = Color.White,
                 fontSize = 35.sp,
                 modifier = Modifier.weight(1f)
                     .padding(start = 20.dp, top = 90.dp),
                 textAlign = TextAlign.Start
             )
             Text(
-                text = calculatedSource.toString(),
-                color = colorResource(R.color.fxGo_SourceValue),
+                text = calculatedSource.toString() + sourceUnit,
+                color = Color.White,
                 fontSize = 35.sp,
                 modifier = Modifier.weight(1f)
                     .padding(end = 20.dp, top = 90.dp),
@@ -610,22 +612,24 @@ fun FxScreen(modifier: Modifier = Modifier) {
         // Target currency
         Row(
             modifier = Modifier
-                .height(100.dp)
+                .height(70.dp)
+                .padding(top = 10.dp)
+                .background(Color.Transparent)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
             Text(
                 text = destinationCurrency,
-                color = Color.White,
+                color = colorResource(R.color.fxGo_SourceValue),
                 fontSize = 35.sp,
                 modifier = Modifier.weight(1f)
                     .padding(start = 20.dp, top = 0.dp),
                 textAlign = TextAlign.Start
             )
             Text(
-                text = calculatedDestination.toString(),
-                color = Color.White,
+                text = calculatedDestination.toString() + destinationUnit,
+                color = colorResource(R.color.fxGo_SourceValue),
                 fontSize = 35.sp,
                 modifier = Modifier.weight(1f)
                     .padding(end = 20.dp, top = 0.dp),

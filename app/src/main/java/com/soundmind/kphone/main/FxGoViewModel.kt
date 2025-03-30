@@ -88,6 +88,12 @@ class FxGoViewModel(application: Application) : AndroidViewModel(application) {
     fun getDestinationCurrency(): String {
         return if (toKRW.value!!) "KRW" else LanguageFlag.getCurrencyCodeForLanguage(systemLanguage.value!!)
     }
+    fun getSourceUnit(): String {
+        return if (toKRW.value!!) LanguageFlag.getCurrencyUnitForLanguage(systemLanguage.value!!) else "₩"
+    }
+    fun getDestinationUnit(): String {
+        return if (toKRW.value!!) "₩" else LanguageFlag.getCurrencyUnitForLanguage(systemLanguage.value!!)
+    }
 
     fun getSourceLanguage(): String {
         return if (toKRW.value!!) systemLanguage.value!! else "KRW"

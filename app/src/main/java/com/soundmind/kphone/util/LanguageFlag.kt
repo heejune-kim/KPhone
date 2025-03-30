@@ -34,6 +34,16 @@ class LanguageFlag {
             }
         }
 
+        fun getCurrencyUnitForLanguage(language: String): String {
+            return when (language) {
+                "en" -> "$"
+                "ko" -> "₩"
+                "ja" -> "¥"
+                "vi" -> "d"
+                else -> ""
+            }
+        }
+
         fun getCurrencyCodeForLanguage(language: String): String {
             return when (language) {
                 "en" -> "USD"

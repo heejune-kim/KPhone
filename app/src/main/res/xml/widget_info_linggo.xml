@@ -14,10 +14,15 @@
   ~ limitations under the License.
   -->
 
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:resizeMode="none"
+<!--
     android:minWidth="40dp"
     android:minHeight="40dp"
+-->
+
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
+    android:resizeMode="none"
+    android:minWidth="296dp"
+    android:minHeight="296dp"
     android:updatePeriodMillis="3600000"
     android:previewImage="@drawable/ic_app"
     android:initialLayout="@layout/widget_layout">

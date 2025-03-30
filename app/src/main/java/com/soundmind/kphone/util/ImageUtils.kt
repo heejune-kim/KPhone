@@ -19,9 +19,14 @@ package com.soundmind.kphone.util
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
 import android.graphics.ImageFormat
 import android.graphics.Matrix
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
+import android.graphics.RectF
 import android.media.Image
 import android.util.Log
 import androidx.annotation.ColorInt
@@ -354,6 +359,55 @@ object ImageUtils {
 
         return Bitmap.createBitmap(argb, width, height, Bitmap.Config.ARGB_8888)
     }
+
+    /**
+     * Creates a new Bitmap with rounded corners based on the input Bitmap.
+     *
+     * @param bitmap The source Bitmap.
+     * @param pixels The corner radius in pixels.
+     * @return A new Bitmap with rounded corners.
+     */
+    fun getRoundedCornerBitmap(bitmap: Bitmap, pixels: Int): Bitmap {
+        // Create an output Bitmap with the same dimensions as the input
+        val output = Bitmap.createBitmap(bitmap.width, bitmap.height, Bitmap.Config.ARGB_8888)
+
+        // Create a Canvas to draw onto the output Bitmap
+        val canvas = Canvas(output)
+
+        // Set the color to paint, will be set to transparent
+        val color = -0xbdbdbe
+
+        // Create a Paint object for drawing
+        val paint = Paint()
+
+        // Create a rectangle that covers the whole Bitmap
+        val rect = RectF(0f, 0f, bitmap.width.toFloat(), bitmap.height.toFloat())
+
+        // Convert the radius to float
+        val roundPx = pixels.toFloat()
+
+        // Enable anti-aliasing for smoother edges
+        paint.isAntiAlias = true
+
+        // Fill the Canvas with transparent color
+        canvas.drawARGB(0, 0, 0, 0)
+
+        // Set the color of the Paint
+        paint.color = color
+
+        // Draw the rounded rectangle
+        canvas.drawRoundRect(rect, roundPx, roundPx, paint)
+
+        // Set the PorterDuffXfermode to SRC_IN
+        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+
+        // Draw the original Bitmap onto the Canvas
+        canvas.drawBitmap(bitmap, 0f, 0f, paint)
+
+        // Return the output Bitmap with rounded corners
+        return output
+    }
+
 }
 
 
