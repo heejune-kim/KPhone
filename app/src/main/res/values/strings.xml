@@ -38,4 +38,6 @@
     <string name="number_zero">0</string>
     <string name="launch_k_hone">Launch K-hone</string>
     <string name="capture">Capture</string>
+    <string name="capture_button">Capture Button</string>
+    <string name="viewgo_live">ViewGo Live</string>
 </resources>

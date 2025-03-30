@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -18,6 +19,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Surface
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.OptIn
@@ -32,41 +34,60 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.ui.layout.layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.lifecycle.MutableLiveData
 import com.example.android.camera.utils.YuvToRgbConverter
+import com.soundmind.kphone.KPhoneApplication
 import com.soundmind.kphone.R
 import com.soundmind.kphone.main.ViewGoFragment.Companion.DESIRED_HEIGHT_CROP_PERCENT
 import com.soundmind.kphone.main.ViewGoFragment.Companion.DESIRED_WIDTH_CROP_PERCENT
 import com.soundmind.kphone.util.ImageUtils
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.text.insert
 
 class ViewGoPreviewActivity : AppCompatActivity() {
     private var imageCapture: ImageCapture? = null
     private lateinit var cameraExecutor: ExecutorService
     private lateinit var previewView: PreviewView
-    private lateinit var captureButton: Button
+    private lateinit var captureButton: ImageButton
+    private lateinit var liveButton: ImageButton
     private lateinit var imageView: ImageView
     private val REQUEST_CODE_PERMISSIONS = 101
     private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
     val imageCropPercentages = MutableLiveData<Pair<Int, Int>>()
         .apply { value = Pair(DESIRED_HEIGHT_CROP_PERCENT, DESIRED_WIDTH_CROP_PERCENT) }
 
+    val systemLanguage: String = Locale.getDefault().toString().subSequence(0, 2).toString()
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        val context = applicationContext as KPhoneApplication
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_preview_activity)
 
         previewView = findViewById(R.id.previewView)
+
+        // Set up the listeners for take photo and video capture buttons
         captureButton = findViewById(R.id.captureButton)
-        imageView = findViewById(R.id.imageView)
+        captureButton.setOnClickListener { takePhoto() }
+
+        liveButton = findViewById(R.id.liveButton)
+        liveButton.setOnClickListener {
+            val intent = Intent(context, ViewGoActivity::class.java)
+            intent.putExtra("lang", systemLanguage)
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent)
+        }
+        //imageView = findViewById(R.id.imageView)
 
         // Request camera permissions
         if (allPermissionsGranted()) {
@@ -77,8 +98,6 @@ class ViewGoPreviewActivity : AppCompatActivity() {
             )
         }
 
-        // Set up the listeners for take photo and video capture buttons
-        captureButton.setOnClickListener { takePhoto() }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
@@ -120,6 +139,33 @@ class ViewGoPreviewActivity : AppCompatActivity() {
                 }
             }
         )
+    }
+
+    fun saveBitmapToMediaStore(
+        context: Context,
+        bitmap: Bitmap,
+        displayName: String,
+        mimeType: String = "image/jpeg" // Example: "image/png"
+    ): Uri? {
+        val contentValues = ContentValues().apply {
+            put(MediaStore.MediaColumns.DISPLAY_NAME, displayName)
+            put(MediaStore.MediaColumns.MIME_TYPE, mimeType)
+        }
+
+        val resolver = context.contentResolver
+        var imageUri: Uri? = null
+        try {
+            imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                ?: throw IOException("Failed to create new MediaStore record.")
+            resolver.openOutputStream(imageUri)?.use { outputStream ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream) // Adjust format and quality as needed
+            }
+        } catch (e: IOException) {
+            Log.e("BitmapUtils", "Error saving Bitmap to MediaStore", e)
+            imageUri?.let { resolver.delete(it, null, null) } // Clean up if we inserted a row
+            return null
+        }
+        return imageUri
     }
 
     private fun takePhoto() {
@@ -184,30 +230,55 @@ class ViewGoPreviewActivity : AppCompatActivity() {
                         (imageHeight * heightCrop / 2).toInt()
                     )
                     val croppedBitmap = ImageUtils.rotateAndCrop(convertImageToBitmap!!, rotationDegrees, cropRect)
+
+                    val context = this@ViewGoPreviewActivity
+                    val intent = Intent(context, ViewGoPreviewActivity::class.java)
+                    intent.putExtra("type", "shot")
+                    intent.putExtra("lang", Locale.getDefault().language)
+                    intent.putExtra("image", croppedBitmap)
+                    intent.putExtra("height", mediaImage.height)
+                    intent.putExtra("width", mediaImage.width)
+                    context.startActivity(intent)
+
                     runOnUiThread {
                         imageView.setImageBitmap(croppedBitmap)
                     }
 
                 }
 
+                fun callActivity() {
+                }
+
                 @OptIn(ExperimentalGetImage::class)
                 override fun onCaptureSuccess(image: ImageProxy) {
                     Log.d("TAG", "Photo capture succeeded")
+                    //val uri = saveBitmapToMediaStore(this@ViewGoPreviewActivity, image.toBitmap(), "image.jpg")
                     // Access the image data in memory
+
+                    val app = applicationContext as KPhoneApplication
+                    app.sharedImage = image
+
                     val buffer: ByteBuffer = image.planes[0].buffer
                     buffer.rewind()
                     val bytes = ByteArray(buffer.capacity())
                     buffer.get(bytes)
-                    doIt(image, bytes)
-                    image.close()
-                    return
+                    //doIt(image, bytes)
+
+                    val context = this@ViewGoPreviewActivity
+                    val intent = Intent(context, ViewGoActivity::class.java)
+                    intent.putExtra("type", "shot")
+                    intent.putExtra("lang", Locale.getDefault().language)
+                    //intent.putExtra("image", uri.toString())
+                    intent.putExtra("height", image.height)
+                    intent.putExtra("width", image.width)
+                    //image.close()
+                    context.startActivity(intent)
 
                     // At this point, 'bytes' contains the image data as a ByteArray
                     // You can now pass the 'bytes' to your image processing method.
-                    processImageBytes(bytes)
+                    //processImageBytes(bytes)
 
                     // Don't forget to close the image.
-                    image.close()
                 }
             }
         )

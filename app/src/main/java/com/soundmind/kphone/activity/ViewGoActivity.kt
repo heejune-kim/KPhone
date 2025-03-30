@@ -1,10 +1,13 @@
 package com.soundmind.kphone.activity
 
+import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,22 +39,35 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.fragment.app.Fragment
 import com.soundmind.kphone.R
 import com.soundmind.kphone.main.LingGoFragment
 import com.soundmind.kphone.main.ViewGoFragment
+import com.soundmind.kphone.main.ViewGoShotFragment
 import com.soundmind.kphone.ui.theme.KPhoneTheme
 import java.util.Locale
 
 class ViewGoActivity : AppCompatActivity() {
     lateinit var systemLanguage: String
+    //@RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_translateshowcase_activity)
         //systemLanguage = intent.getStringExtra("lang").toString()
         systemLanguage = Locale.getDefault().toString().subSequence(0, 2).toString()
-        val fragment = ViewGoFragment.newInstance()
         val bundle = Bundle()
         bundle.putString("lang", systemLanguage)
+        val type = intent.getStringExtra("type").toString()
+        var fragment: Fragment
+        if (type == "shot") {
+            fragment = ViewGoShotFragment.newInstance()
+            //val image = intent.getStringExtra("image")
+            //bundle.putString("image", image)
+            bundle.putInt("width", intent.getIntExtra("width", 0))
+            bundle.putInt("height", intent.getIntExtra("height", 0))
+        } else {
+            fragment = ViewGoFragment.newInstance()
+        }
         fragment.arguments = bundle
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()

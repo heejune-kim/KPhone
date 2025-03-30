@@ -5,23 +5,57 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="@string/view_go_title"
+        app:navigationIcon="@drawable/ic_back" />
+
+    <!--
+    app:layout_constraintTop_toBottomOf="@+id/toolbar"
+    -->
     <androidx.camera.view.PreviewView android:id="@+id/previewView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/captureButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        />
     <!-- android:layout_width="match_parent" android:layout_height="match_parent" /> -->
 
+    <ImageButton android:id="@+id/liveButton" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/capture_button"
+        android:text="@string/viewgo_live"
+        app:layout_constraintTop_toTopOf="@+id/toolbar"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/toolbar"
+        android:src="@drawable/viewgo_live"
+        android:background="@android:color/transparent"
+        android:paddingEnd="16px"
+        />
 
-    <Button android:id="@+id/captureButton" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" android:text="@string/capture"
+    <ImageButton android:id="@+id/captureButton" android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/capture_button"
+        android:text="@string/capture"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/viewgoshot_translate"
+        android:background="@android:color/transparent"
+        android:paddingBottom="16px"
         />
     <!-- app:layout_constraintTop_toBottomOf="@id/previewView" /> -->
 
 
+    <!--
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
@@ -29,6 +63,6 @@
         android:contentDescription="TODO"
         app:layout_constraintBottom_toTopOf="@id/captureButton"
         app:layout_constraintTop_toTopOf="parent"/>
-        <!--app:layout_constraintStart_toStartOf="parent"/>-->
+        -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

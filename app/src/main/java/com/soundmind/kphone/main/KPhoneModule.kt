@@ -11,11 +11,14 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.common.model.RemoteModelManager
+import com.google.mlkit.nl.languageid.LanguageIdentification
+import com.google.mlkit.nl.languageid.LanguageIdentificationOptions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.TranslateRemoteModel
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
+import com.soundmind.kphone.util.Language
 
 class KPhoneModule(application: Application): AndroidViewModel(application)  {
     companion object {
@@ -220,28 +223,32 @@ class KPhoneModule(application: Application): AndroidViewModel(application)  {
     }
 
     fun translateText(source: String) {
-        //log("${source} is set.")
-        if (source.length < 2) {
-            return
-        }
-        sourceText = source
-        val processTranslation = OnCompleteListener<String> { task ->
-            run {
-                //val map = Arguments.createMap()
-                if (task.isSuccessful) {
-                    translatedText.value = ResultOrError(task.result, null)
-                    //map.putString("value1", "true")
-                    //map.putString("value2", task.result)
-                } else {
-                    translatedText.value = ResultOrError(null, task.exception)
-                    //map.putString("value1", "false")
-                    //map.putString("value1", "ERROR")
+        languageIdentification.identifyLanguage(source)
+            .addOnSuccessListener {
+                if (it != "und")
+                    sourceLang = it //Language(it)
+                //log("${source} is set.")
+                if (source.length > 0) {
+                    sourceText = source
+                    val processTranslation = OnCompleteListener<String> { task ->
+                        run {
+                            //val map = Arguments.createMap()
+                            if (task.isSuccessful) {
+                                translatedText.value = ResultOrError(task.result, null)
+                                //map.putString("value1", "true")
+                                //map.putString("value2", task.result)
+                            } else {
+                                translatedText.value = ResultOrError(null, task.exception)
+                                //map.putString("value1", "false")
+                                //map.putString("value1", "ERROR")
+                            }
+                            //this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
+                            //    .emit("translationComplete", map)
+                        }
+                    }
+                    translate().addOnCompleteListener(processTranslation)
                 }
-                //this.reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter::class.java)
-                //    .emit("translationComplete", map)
             }
-        }
-        translate().addOnCompleteListener(processTranslation)
     }
 
     fun getTranslatedText(): String {
@@ -256,5 +263,11 @@ class KPhoneModule(application: Application): AndroidViewModel(application)  {
         // return Locale.getDefault().toString()
     }
 
+    private val languageIdentification by lazy {
+        LanguageIdentification.getClient(
+            //LanguageIdentificationOptions.Builder().setExecutor(executor).build()
+            LanguageIdentificationOptions.Builder().build()
+        )
+    }
     inner class ResultOrError(var result: String?, var error: Exception?)
 }

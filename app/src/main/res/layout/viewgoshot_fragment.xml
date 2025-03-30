@@ -22,7 +22,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.soundmind.kphone.main.ViewGoShotFragment"
+    tools:context="com.soundmind.kphone.main.ViewGoFragment"
     >
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -37,22 +37,25 @@
         app:title="@string/view_go_title"
         app:navigationIcon="@drawable/ic_back" />
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/viewfinder"
+    <!--<androidx.camera.view.PreviewView-->
+    <ImageView
+        android:id="@+id/shotView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/middle"
         app:layout_constraintTop_toBottomOf="@id/toolbar" />
+    <!--
     <SurfaceView
         android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintStart_toStartOf="@id/viewfinder"
-        app:layout_constraintEnd_toEndOf="@id/viewfinder"
-        app:layout_constraintBottom_toBottomOf="@id/viewfinder"
-        app:layout_constraintTop_toTopOf="@id/viewfinder" />
+        app:layout_constraintStart_toStartOf="@id/shotView"
+        app:layout_constraintEnd_toEndOf="@id/shotView"
+        app:layout_constraintBottom_toBottomOf="@id/shotView"
+        app:layout_constraintTop_toTopOf="@id/shotView" />
+        -->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/middle"
@@ -130,7 +133,7 @@
         app:layout_constraintBottom_toTopOf="@+id/divider2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewfinder">
+        app:layout_constraintTop_toBottomOf="@+id/shotView">
 
         <TextView
             android:id="@+id/translatedText"
