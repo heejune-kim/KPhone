@@ -18,6 +18,7 @@
 package com.soundmind.kphone.main
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.*
 import android.os.Bundle
@@ -43,6 +44,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.soundmind.kphone.R
+import com.soundmind.kphone.activity.ViewGoPreviewActivity
 //import com.google.mlkit.showcase.translate.R
 import com.soundmind.kphone.analyzer.TextAnalyzer
 import com.soundmind.kphone.databinding.ViewgoFragmentBinding // .MainFragmentBinding
@@ -133,6 +135,11 @@ class ViewGoFragment : Fragment() {
 
         toolbar.setNavigationOnClickListener {
             // Handle the back button click, navigate up in the hierarchy
+            val activity = activity as? AppCompatActivity
+
+            val intent = Intent(activity, ViewGoPreviewActivity::class.java)
+            intent.putExtra("lang", systemLanguage)
+            activity?.startActivity(intent)
             activity?.finish()
             //findNavController().navigateUp()
         }

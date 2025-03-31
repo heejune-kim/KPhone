@@ -24,6 +24,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.OptIn
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
@@ -70,7 +71,7 @@ class ViewGoPreviewActivity : AppCompatActivity() {
     val systemLanguage: String = Locale.getDefault().toString().subSequence(0, 2).toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val context = applicationContext as KPhoneApplication
+        //val context = applicationContext as KPhoneApplication
         super.onCreate(savedInstanceState)
         setContentView(R.layout.camera_preview_activity)
 
@@ -82,13 +83,25 @@ class ViewGoPreviewActivity : AppCompatActivity() {
 
         liveButton = findViewById(R.id.liveButton)
         liveButton.setOnClickListener {
+            val context = this@ViewGoPreviewActivity
             val intent = Intent(context, ViewGoActivity::class.java)
             intent.putExtra("lang", systemLanguage)
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent)
+            context.finish()
         }
         //imageView = findViewById(R.id.imageView)
 
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        //(activity as AppCompatActivity).setSupportActionBar(toolbar)
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationOnClickListener {
+            val context = this@ViewGoPreviewActivity
+            //val intent = Intent(context, ViewGoActivity::class.java)
+            //intent.putExtra("lang", systemLanguage)
+            //context.startActivity(intent)
+            context.finish()
+        }
         // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
