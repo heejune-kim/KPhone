@@ -125,9 +125,9 @@ class KPhoneGlaceWidget : GlanceAppWidget() {
                     Text(
                         text = text,
                         style = TextStyle(color = ColorProvider(Color.White),
-                            fontSize = 11.sp),
+                            fontSize = 10.sp),
                         modifier = GlanceModifier
-                            .padding(start=90.dp, top=15.dp, bottom=10.dp)
+                            .padding(start=95.dp, top=15.dp, bottom=10.dp)
                     )
                 }
             }
@@ -168,9 +168,9 @@ class KPhoneGlaceWidget : GlanceAppWidget() {
                         provider = ImageProvider(subImage),
                         contentDescription = "Flag",
                         modifier = GlanceModifier
-                            .padding(start = 10.dp, top = 5.dp)
-                            .width(35.dp)
-                            .height(35.dp)
+                            .padding(start = 10.dp, top = 15.dp)
+                            .width(40.dp)
+                            .height(40.dp)
                             //.padding(start=44.dp, top=15.dp, end=5.dp)
                             //.width(205.dp)
                             //.height(60.dp)
@@ -180,7 +180,7 @@ class KPhoneGlaceWidget : GlanceAppWidget() {
                         style = TextStyle(color = ColorProvider(Color.Black),
                             fontSize = 17.sp),
                         modifier = GlanceModifier
-                            .padding(start = 10.dp, top = 10.dp),
+                            .padding(start = 10.dp, top = 20.dp),
                             //.padding(start=90.dp, top=15.dp, bottom=10.dp)
                     )
                 }
@@ -252,6 +252,12 @@ class KPhoneGlaceWidget : GlanceAppWidget() {
         }
     }
 
+    @Composable
+    private fun Spacer() {
+        Box(modifier = GlanceModifier.height(8.dp)) {
+            // Empty box to add some space between elements
+        }
+    }
     @SuppressLint("RestrictedApi")
     @Composable
     private fun MyContent() {
@@ -260,37 +266,66 @@ class KPhoneGlaceWidget : GlanceAppWidget() {
             LazyVerticalGrid(
                 gridCells = GridCells.Fixed(2),
                 modifier = GlanceModifier
-                    .fillMaxWidth(),
+                    .fillMaxSize(),
                 //contentPadding = GlanceModifier.padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 item {
-                    LingViewGo(topLeft = R.drawable.top_linggo, subImage = R.drawable.top_typing, text = "Type to translate", action = actionStartActivity<LingGoActivity>())
+                    Column(modifier = GlanceModifier) {
+                        LingViewGo(topLeft = R.drawable.top_linggo, subImage = R.drawable.top_typing, text = "Type to translate", action = actionStartActivity<LingGoActivity>())
+                        Spacer()
+                    }
                 }
                 item {
-                    LingViewGo(topLeft = R.drawable.top_viewgo, subImage = R.drawable.top_camera, text = "Take a picture", action = actionStartActivity<ViewGoPreviewActivity>())
+                    Column(modifier = GlanceModifier) {
+                        LingViewGo(
+                            topLeft = R.drawable.top_viewgo,
+                            subImage = R.drawable.top_camera,
+                            text = "Take a picture",
+                            action = actionStartActivity<ViewGoPreviewActivity>()
+                        )
+                        Spacer()
+                    }
                 }
                 item {
-                    LingViewGo(topLeft = R.drawable.top_fxgo, subImage = R.drawable.top_camera, text = "Exchange", action = actionStartActivity<FxGoActivity>())
+                    Column(modifier = GlanceModifier) {
+                        LingViewGo(
+                            topLeft = R.drawable.top_fxgo,
+                            subImage = R.drawable.top_camera,
+                            text = "Exchange",
+                            action = actionStartActivity<FxGoActivity>()
+                        )
+                        Spacer()
+                    }
                 }
                 item {
-                    Support(topLeft = R.drawable.top_support,
-                        subImage = R.drawable.top_support_phone,
-                        text = _context?.getString(R.string.support_center_number).toString(),
-                        action = actionRunCallback<DialogActionCallback>()
-                    )
+                    Column(modifier = GlanceModifier) {
+                        Support(
+                            topLeft = R.drawable.top_support,
+                            subImage = R.drawable.top_support_phone,
+                            text = _context?.getString(R.string.support_center_number).toString(),
+                            action = actionRunCallback<DialogActionCallback>()
+                        )
+                        Spacer()
+                    }
                 }
                 item {
-                    ImageLink(topLeft = R.drawable.top_hanpass,
-                        action = actionRunCallback<HanpassActionCallback>()
-                    )
-                    //LingViewGo()
+                    Column(modifier = GlanceModifier) {
+                        ImageLink(
+                            topLeft = R.drawable.top_hanpass,
+                            action = actionRunCallback<HanpassActionCallback>()
+                        )
+                        Spacer()
+                    }
                 }
                 item {
-                    ImageLink(topLeft = R.drawable.top_kvisa,
-                        action = actionRunCallback<KVisaActionCallback>()
-                    )
-                    //LingViewGo()
+                    Column(modifier = GlanceModifier) {
+                        ImageLink(
+                            topLeft = R.drawable.top_kvisa,
+                            action = actionRunCallback<KVisaActionCallback>()
+                        )
+                        Spacer()
+                    }
                 }
             }
         /*
