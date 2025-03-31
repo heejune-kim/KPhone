@@ -16,6 +16,7 @@ import com.soundmind.kphone.activity.LingGoActivity
 import com.soundmind.kphone.activity.ViewGoActivity
 import com.soundmind.kphone.util.ImageUtils
 
+/*
 class KPhoneWidgetProvider : AppWidgetProvider(){
     @SuppressLint("RemoteViewLayout")
     override fun onUpdate(
@@ -74,3 +75,5 @@ class KPhoneWidgetProvider : AppWidgetProvider(){
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }
 }
+
+ */

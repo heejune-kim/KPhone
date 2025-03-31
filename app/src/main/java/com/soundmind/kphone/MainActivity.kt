@@ -7,6 +7,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -426,7 +427,7 @@ fun MainScreen(modifier: Modifier = Modifier) {
     }
     kphone.translateTop(systemLanguage, linggoMessage, viewgoMessage)
 
-    val phoneNumber = "070-4643-8843"
+    val phoneNumber = context.getString(R.string.support_center_number).toString()
 
     val items = listOf(
         Item(R.drawable.top_linggo, 'G', R.drawable.top_typing, linggoMessage, object : ClickListener {
